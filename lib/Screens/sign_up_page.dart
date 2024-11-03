@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makkah_app/models/users.dart';
 import '../Widgets/sign_up_widget.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -26,17 +27,19 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  void signUp() {
+  Future<void> signUp() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
+    final dbHelper = DatabaseHelper();
 
     if (validatePassword(password) == null) {
-      widget.registeredUsers.add(username);
+      await dbHelper.insertUser(username, password);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('User registered successfully! Please sign in.')),
       );
       Navigator.pop(context);
     }
+    await dbHelper.closeDatabase();
   }
 
   @override

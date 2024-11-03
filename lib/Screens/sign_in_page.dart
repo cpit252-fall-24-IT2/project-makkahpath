@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Widgets/sign_in_widget.dart';
 import '../Screens/sign_up_page.dart'; 
 import '../Screens/Home_page.dart';
+import 'package:makkah_app/models/users.dart';
 //-------------------------------------------------
 class SignInPage extends StatefulWidget {
   @override
@@ -22,16 +23,20 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void signIn() {
+  Future<void> signIn() async {
     final username = _usernameController.text;
+    final password = _passwordController.text;
+    final dbHelper = DatabaseHelper();
+    bool loginSuccess = await dbHelper.login(username, password);
 
-    if (registeredUsers.contains(username)) {
+    if (loginSuccess) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Username not registered. Please sign up.')),
+        SnackBar(content: Text('Login failed. Incorrect username or password.')),
       );
     }
+    await dbHelper.closeDatabase();
   }
 
   @override
