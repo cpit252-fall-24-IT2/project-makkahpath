@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:makkah_app/Widgets/BottomButton.dart';
 import '../models/PageNavigation.dart';
-import '../widgets/BottomButton.dart';
-
+import 'TicketsScreen.dart';
+import 'SettingsScreen.dart';
+import 'HomeScreen.dart';
 
 class HomePageNavigation implements PageNavigation {
   final BuildContext context;
@@ -13,21 +14,30 @@ class HomePageNavigation implements PageNavigation {
   @override
   Widget HomeButton() {
     return buttonRenderer.renderButton('Home', Icons.home, () {
-      // push to screeen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     });
   }
 
   @override
   Widget TicketsButton() {
     return buttonRenderer.renderButton('Tickets', Icons.directions_bus, () {
-      // push to screeen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TicketsScreen()),
+      );
     });
   }
 
   @override
   Widget SettingsButton() {
     return buttonRenderer.renderButton('Settings', Icons.settings, () {
-      // push to screeen
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SettingsScreen()),
+      );
     });
   }
 }

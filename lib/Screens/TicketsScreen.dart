@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:makkah_app/Screens/HomePageNavigation.dart';
 import 'package:makkah_app/Widgets/BottomButton.dart';
-
-class HomePage extends StatelessWidget {
- @override
+class TicketsScreen extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     final BottomButton renderer = BasicButtonRenderer();
     final HomePageNavigation pageNavigation = HomePageNavigation(context, renderer);
-
+    
     return Scaffold(
-      appBar: AppBar(title: Text('Home Page')),
+      appBar: AppBar(title: Text('Tickets')),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
