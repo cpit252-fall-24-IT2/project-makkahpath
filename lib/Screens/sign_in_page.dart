@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:makkah_app/Screens/HomeScreen.dart';
 import '../Widgets/sign_in_widget.dart';
 import '../Screens/sign_up_page.dart'; 
-import '../Screens/Home_page.dart';
 import 'package:makkah_app/models/users.dart';
 //-------------------------------------------------
 class SignInPage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _SignInPageState extends State<SignInPage> {
     bool loginSuccess = await dbHelper.login(username, password);
 
     if (loginSuccess) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed. Incorrect username or password.')),

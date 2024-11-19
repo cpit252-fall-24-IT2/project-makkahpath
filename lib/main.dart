@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:makkah_app/Screens/sign_in_page.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:makkah_app/models/users.dart';
 
 void main() {
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || 
