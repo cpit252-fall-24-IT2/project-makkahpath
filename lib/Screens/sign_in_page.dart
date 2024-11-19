@@ -30,7 +30,7 @@ class _SignInPageState extends State<SignInPage> {
     bool loginSuccess = await dbHelper.login(username, password);
 
     if (loginSuccess) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed. Incorrect username or password.')),
