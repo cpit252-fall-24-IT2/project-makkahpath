@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:makkah_app/Screens/AccountInfoScreen.dart';
+import 'package:makkah_app/Screens/CustomerServiceScreen.dart';
 import 'package:makkah_app/Widgets/BottomButton.dart';
 import '../models/PageNavigation.dart';
 import 'TicketsScreen.dart';
@@ -37,6 +39,26 @@ class HomePageNavigation implements PageNavigation {
         Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AccountScreen()),
+      );
+    });
+  }
+
+  @override
+  Widget AccountInfo(){
+    return buttonRenderer.renderButton('Account Information', Icons.account_box, () {
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AccountInfoScreen()),
+      );
+    });
+  }
+
+  @override
+  Widget CustomerService(){
+    return buttonRenderer.renderButton('Customer Service', Icons.design_services, () {
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CustomerServiceScreen()),
       );
     });
   }

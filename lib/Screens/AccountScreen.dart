@@ -10,6 +10,7 @@ class AccountScreen extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(title: Text('Account')),
+      
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
