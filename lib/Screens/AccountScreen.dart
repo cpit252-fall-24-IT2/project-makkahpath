@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:makkah_app/Screens/HomePageNavigation.dart';
 import 'package:makkah_app/Widgets/BottomButton.dart';
 
-class SettingsScreen extends StatelessWidget {
+class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BottomButton renderer = BasicButtonRenderer();
     final HomePageNavigation pageNavigation = HomePageNavigation(context, renderer);
     
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(title: Text('Account')),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
@@ -23,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
           children: [
             pageNavigation.HomeButton(),
             pageNavigation.TicketsButton(),
-            pageNavigation.SettingsButton(),
+            pageNavigation.AccountButton(),
           ],
         ),
       ),

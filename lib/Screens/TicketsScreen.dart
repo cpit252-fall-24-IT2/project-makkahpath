@@ -22,7 +22,7 @@ class TicketsScreen extends StatelessWidget {
           children: [
             pageNavigation.HomeButton(),
             pageNavigation.TicketsButton(),
-            pageNavigation.SettingsButton(),
+            pageNavigation.AccountButton(),
           ],
         ),
       ),
