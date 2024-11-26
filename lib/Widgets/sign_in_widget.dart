@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart'; 
-
+import 'package:flutter/material.dart';
 
 class SignInForm extends StatelessWidget {
   final TextEditingController usernameController;
@@ -7,14 +6,13 @@ class SignInForm extends StatelessWidget {
   final Function onSignIn;
   final Function onNavigateToSignUp;
 
-  // Constructor
   const SignInForm({
     Key? key,
     required this.usernameController,
     required this.passwordController,
     required this.onSignIn,
     required this.onNavigateToSignUp,
-  }) : super(key: key); // Correctly call the superclass constructor
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +27,7 @@ class SignInForm extends StatelessWidget {
               labelText: 'Username',
               filled: true,
               fillColor: Colors.white.withOpacity(0.8),
+              prefixIcon: Icon(Icons.person),
             ),
           ),
           SizedBox(height: 10),
@@ -38,6 +37,7 @@ class SignInForm extends StatelessWidget {
               labelText: 'Password',
               filled: true,
               fillColor: Colors.white.withOpacity(0.8),
+              prefixIcon: Icon(Icons.lock),
             ),
             obscureText: true,
           ),

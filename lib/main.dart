@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:makkah_app/Screens/sign_in_page.dart';
+import 'package:makkah_app/Screens/SignInPage.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
