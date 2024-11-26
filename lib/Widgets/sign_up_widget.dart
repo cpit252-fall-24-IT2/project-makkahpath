@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 class SignUpForm extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
-  final TextEditingController emailController;
   final Function onSignUp;
 
   const SignUpForm({
     Key? key,
     required this.usernameController,
     required this.passwordController,
-    required this.emailController,
     required this.onSignUp,
   }) : super(key: key);
 
@@ -31,20 +29,6 @@ class SignUpForm extends StatelessWidget {
               prefixIcon: Icon(Icons.person),
               border: OutlineInputBorder(),
             ),
-          ),
-          SizedBox(height: 10),
-
-          // Email Input
-          TextField(
-            controller: emailController,
-            decoration: InputDecoration(
-              labelText: 'Email',
-              filled: true,
-              fillColor: Colors.white.withOpacity(0.8),
-              prefixIcon: Icon(Icons.email),
-              border: OutlineInputBorder(),
-            ),
-            keyboardType: TextInputType.emailAddress,
           ),
           SizedBox(height: 10),
 

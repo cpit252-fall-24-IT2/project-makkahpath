@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:makkah_app/Screens/HomeScreen.dart';
 import '../Widgets/sign_in_widget.dart';
-import 'SignUpPage.dart';
+import '../Screens/SignUpPage.dart'; 
 import 'package:makkah_app/models/users.dart';
-
+//-------------------------------------------------
 class SignInPage extends StatefulWidget {
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -12,12 +12,13 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Set<String> registeredUsers = {}; // In-memory storage for users
 
   void navigateToSignUp() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SignUpPage(),
+        builder: (context) => SignUpPage(registeredUsers: registeredUsers),
       ),
     );
   }

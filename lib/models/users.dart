@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
+  // Singleton instance
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   factory DatabaseHelper() => _instance;
   DatabaseHelper._internal();
@@ -28,7 +29,6 @@ class DatabaseHelper {
           CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL,
-            email TEXT NOT NULL,
             password TEXT NOT NULL
           )
         ''');
@@ -36,40 +36,34 @@ class DatabaseHelper {
     );
   }
 
-  // Insert new user and return a bool indicating success or failure
-Future<bool> insertUser(String username, String email, String password) async {
-  final db = await database;
-  try {
-    final result = await db.insert(
+  // Insert data
+  Future<int> insertUser(String username, String password) async {
+    final db = await database; // Ensure database is initialized
+    return await db.insert(
       'users',
-      {'username': username, 'email': email, 'password': password},
+      {'username': username, 'password': password},
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    // If the result is greater than 0, the insert was successful
-    return result > 0;
-  } catch (e) {
-    return false;
   }
-}
 
   // Check login
   Future<bool> login(String username, String password) async {
-    final db = await database;
-    final result = await db.query(
+    final db = await database; // Ensure database is initialized
+
+    final List<Map<String, dynamic>> result = await db.query(
       'users',
       where: 'username = ? AND password = ?',
       whereArgs: [username, password],
     );
+
     return result.isNotEmpty;
   }
 
-  // Close the database
+  // Close database (only when done with the database)
   Future<void> closeDatabase() async {
     if (_database != null && isInitialized) {
       await _database!.close();
-      isInitialized = false;
+      isInitialized = false;  // Reset flag after closing
     }
   }
-
-  
 }
