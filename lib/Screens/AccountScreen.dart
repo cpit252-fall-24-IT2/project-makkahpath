@@ -11,6 +11,21 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Account')),
       
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Account Info Button
+            pageNavigation.AccountInfo(),
+            
+            SizedBox(height: 16), // Add spacing between buttons
+
+            // Customer Service Button
+            pageNavigation.CustomerService(),
+          ],
+        ),
+      ),
+      
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
