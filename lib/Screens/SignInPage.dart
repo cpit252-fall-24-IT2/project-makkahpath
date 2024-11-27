@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makkah_app/Screens/HomeScreen.dart';
 import '../Widgets/sign_in_widget.dart';
 import '../Screens/SignUpPage.dart'; 
-import 'package:makkah_app/models/users.dart';
+import 'package:makkah_app/models/DB.dart';
 //-------------------------------------------------
 class SignInPage extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _SignInPageState extends State<SignInPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SignUpPage(registeredUsers: registeredUsers),
+        builder: (context) => SignUpPage(),
       ),
     );
   }

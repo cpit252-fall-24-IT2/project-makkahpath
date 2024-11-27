@@ -55,7 +55,7 @@ class HomePageNavigation implements PageNavigation {
 
   @override
   Widget CustomerService(){
-    return buttonRenderer.renderButton('Customer Service', Icons.design_services, () {
+    return buttonRenderer.renderButton('Customer Service', Icons.support_agent, () {
         Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => CustomerServiceScreen()),

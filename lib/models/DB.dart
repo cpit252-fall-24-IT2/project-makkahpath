@@ -1,5 +1,5 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   // Singleton instance
@@ -29,6 +29,8 @@ class DatabaseHelper {
           CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT NOT NULL, 
             password TEXT NOT NULL
           )
         ''');
@@ -36,34 +38,39 @@ class DatabaseHelper {
     );
   }
 
-  // Insert data
-  Future<int> insertUser(String username, String password) async {
-    final db = await database; // Ensure database is initialized
-    return await db.insert(
+  // Insert data 
+  Future<void> insertUser(
+    String username, String email, String phone, String password) async {
+    final db = await database;
+    await db.insert(
       'users',
-      {'username': username, 'password': password},
+      {
+        'username': username,
+        'email': email,
+        'phone': phone,
+        'password': password,
+      },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  // Check login
+  // Check login credentials
   Future<bool> login(String username, String password) async {
-    final db = await database; // Ensure database is initialized
-
+    final db = await database;
     final List<Map<String, dynamic>> result = await db.query(
       'users',
       where: 'username = ? AND password = ?',
       whereArgs: [username, password],
     );
 
-    return result.isNotEmpty;
+    return false;
   }
 
-  // Close database (only when done with the database)
+  // Close database when not in use
   Future<void> closeDatabase() async {
     if (_database != null && isInitialized) {
       await _database!.close();
-      isInitialized = false;  // Reset flag after closing
+      isInitialized = false;
     }
   }
 }
