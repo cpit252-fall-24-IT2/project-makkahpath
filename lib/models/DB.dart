@@ -55,16 +55,24 @@ class DatabaseHelper {
   }
 
   // Check login credentials
-  Future<bool> login(String username, String password) async {
-    final db = await database;
-    final List<Map<String, dynamic>> result = await db.query(
-      'users',
-      where: 'username = ? AND password = ?',
-      whereArgs: [username, password],
-    );
+ Future<Map<String, dynamic>?> login(String username, String password) async {
+  final db = await database;
 
-    return false;
+  // Query the database for matching username and password
+  final List<Map<String, dynamic>> result = await db.query(
+    'users',
+    where: 'username = ? AND password = ?',
+    whereArgs: [username, password],
+  );
+
+  if (result.isNotEmpty) {
+    // Return the first matching user's data
+    return result.first;
   }
+
+  // Return null if no match found
+  return null;
+}
 
   // Close database when not in use
   Future<void> closeDatabase() async {

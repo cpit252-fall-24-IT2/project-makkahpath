@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makkah_app/Screens/HomeScreen.dart';
+import 'package:makkah_app/models/User.dart';
 import '../Widgets/sign_in_widget.dart';
 import '../Screens/SignUpPage.dart'; 
 import 'package:makkah_app/models/DB.dart';
@@ -27,7 +28,7 @@ class _SignInPageState extends State<SignInPage> {
     final username = _usernameController.text;
     final password = _passwordController.text;
     final dbHelper = DatabaseHelper();
-    bool loginSuccess = await dbHelper.login(username, password);
+    bool loginSuccess = await User.signIn(username: username, password: password);
 
     if (loginSuccess) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
