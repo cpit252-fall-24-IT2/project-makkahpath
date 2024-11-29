@@ -1,0 +1,116 @@
+{
+    "routes": [
+        {
+            "route_number": 1,
+            "bus_stops": [
+                {
+                    "stop_name": "Al-Buhayratt",
+                    "stop_code": 325,
+                    "times": [
+                        "4:00",
+                        "4:16",
+                        "4:32",
+                        "4:48",
+                        "5:04"
+                    ]
+                },
+                {
+                    "stop_name": "Bathaa Quraish",
+                    "stop_code": 234,
+                    "times": [
+                        "4:16",
+                        "4:32",
+                        "4:48",
+                        "5:04",
+                        "5:20"
+                    ]
+                },
+                {
+                    "stop_name": "Zat Al-Nitaqain",
+                    "stop_code": 211,
+                    "times": [
+                        "4:32",
+                        "4:48",
+                        "5:04",
+                        "5:20",
+                        "5:36"
+                    ]
+                },
+                {
+                    "stop_name": "Al-Hamraa",
+                    "stop_code": 301,
+                    "times": [
+                        "4:48",
+                        "5:04",
+                        "5:20",
+                        "5:36",
+                        "5:52"
+                    ]
+                }
+            ],
+            "days": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ]
+        },
+        {
+            "route_number": 7,
+            "bus_stops": [
+                {
+                    "stop_name": "Al-Buhayratt",
+                    "stop_code": 325,
+                    "times": [
+                        "4:40",
+                        "4:56",
+                        "5:12",
+                        "5:28",
+                        "5:44"
+                    ]
+                },
+                {
+                    "stop_name": "Bathaa Quraish",
+                    "stop_code": 234,
+                    "times": [
+                        "4:56",
+                        "5:12",
+                        "5:28",
+                        "5:44",
+                        "6:00"
+                    ]
+                },
+                {
+                    "stop_name": "Zat Al-Nitaqain",
+                    "stop_code": 211,
+                    "times": [
+                        "5:12",
+                        "5:28",
+                        "5:44",
+                        "6:00",
+                        "6:16"
+                    ]
+                },
+                {
+                    "stop_name": "Al-Hamraa",
+                    "stop_code": 301,
+                    "times": [
+                        "5:28",
+                        "5:44",
+                        "6:00",
+                        "6:16",
+                        "6:32"
+                    ]
+                }
+            ],
+            "days": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ]
+        }
+    ]
+}
