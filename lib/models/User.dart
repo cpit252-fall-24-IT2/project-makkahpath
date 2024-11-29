@@ -26,20 +26,33 @@ class User {
   }
 
 // Example update operation
-Future<void> updateUserProfile(String newEmail, String newPhone) async {
-  final db = await DatabaseHelper().database;
+Future<void> updateUserProfile({
+    String? username,
+    String? password,
+    String? email,
+    String? phone,
+  }) async {
+    final db = await DatabaseHelper().database;
 
-  await db.update(
-    'users',
-    {'email': newEmail, 'phone': newPhone},
-    where: 'username = ?',
-    whereArgs: [User.username],
-  );
+    final Map<String, dynamic> updates = {};
+    if (username != null) updates['username'] = username;
+    if (password != null) updates['password'] = password;
+    if (email != null) updates['email'] = email;
+    if (phone != null) updates['phone'] = phone;
 
-  // Update static properties
-  User.email = newEmail;
-  User.phone = newPhone;
+    await db.update(
+      'users',
+      updates,
+      where: 'username = ?',
+      whereArgs: [User.username],
+    );
 
-  print('Profile updated successfully!');
-}
+    // Update static properties
+    if (username != null) User.username = username;
+    if (password != null) User.password = password;
+    if (email != null) User.email = email;
+    if (phone != null) User.phone = phone;
+
+    print('Profile updated successfully!');
+  }
 }
