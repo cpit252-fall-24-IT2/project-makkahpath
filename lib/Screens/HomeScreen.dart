@@ -25,7 +25,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> loadBusStops() async {
     try {
       // Load JSON file
-      final String jsonString = await rootBundle.loadString('assets/bus_route_data.json');
+      final String jsonString =
+          await rootBundle.loadString('assets/bus_route_data.json');
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       // Extract bus stops from JSON data
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
           // Add all stops for listing
           stops.add({
             "name": stop['stop_name'],
-            "time": stop['times'][0], // Picking the first time for display
+            "time": stop['times'],
             "destination": "Route ${route['route_number']}"
           });
         }
@@ -56,13 +57,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final HomePageNavigation pageNavigation = HomePageNavigation(context, renderer);
+    final HomePageNavigation pageNavigation =
+        HomePageNavigation(context, renderer);
 
     // Filter bus stops based on the search or selected stop
     List<Map<String, dynamic>> filteredStops = selectedStop.isEmpty
         ? busStops
         : busStops
-            .where((stop) => stop["name"].toLowerCase().contains(selectedStop.toLowerCase()))
+            .where((stop) =>
+                stop["name"].toLowerCase().contains(selectedStop.toLowerCase()))
             .toList();
 
     return Scaffold(
@@ -89,7 +92,6 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   const SizedBox(height: 10),
-
                   // Horizontal Scrollable Buttons for Unique Stops
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -110,25 +112,31 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
                   // Display Bus Stops
                   Expanded(
                     child: ListView.builder(
                       itemCount: filteredStops.length,
                       itemBuilder: (context, index) {
                         final stop = filteredStops[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: ListTile(
-                            title: Text(stop["name"]),
-                            subtitle: Text('Time: ${stop["time"]}\nDestination: ${stop["destination"]}'),
-                            trailing: ElevatedButton(
-                              onPressed: () {
-                                // Reservation logic here
-                              },
-                              child: const Text('Reserve'),
-                            ),
-                          ),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: stop["time"].map<Widget>((time) {
+                            return Card(
+                              margin:
+                                  const EdgeInsets.symmetric(vertical: 10.0),
+                              child: ListTile(
+                                title: Text(stop["name"]),
+                                subtitle: Text(
+                                    'Time: $time\nDestination: ${stop["destination"]}'),
+                                trailing: ElevatedButton(
+                                  onPressed: () {
+                                    // Reservation logic here
+                                  },
+                                  child: const Text('Reserve'),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         );
                       },
                     ),
@@ -136,7 +144,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(

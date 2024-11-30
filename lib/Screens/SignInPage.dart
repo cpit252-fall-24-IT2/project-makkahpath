@@ -13,7 +13,6 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final Set<String> registeredUsers = {}; // In-memory storage for users
 
   void navigateToSignUp() {
     Navigator.push(
