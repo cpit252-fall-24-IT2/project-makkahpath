@@ -9,19 +9,16 @@ class AccountScreen extends StatelessWidget {
     final HomePageNavigation pageNavigation = HomePageNavigation(context, renderer);
     
     return Scaffold(
-      appBar: AppBar(title: Text('Account')),
-      
+      appBar: AppBar(title: Text('Account')),    
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Account Info Button
-            pageNavigation.AccountInfo(),
-            
-            SizedBox(height: 16), // Add spacing between buttons
-
-            // Customer Service Button
-            pageNavigation.CustomerService(),
+            pageNavigation.AccountInfo(),  // Account Info Button
+            SizedBox(height: 20),   // Add spacing between buttons
+            pageNavigation.CustomerService(),  // Customer Service Button
+             SizedBox(height: 20),   // Add spacing between buttons
+            pageNavigation.SignOut(), // Sign out button
           ],
         ),
       ),
@@ -39,7 +36,7 @@ class AccountScreen extends StatelessWidget {
           children: [
             pageNavigation.HomeButton(),
             pageNavigation.TicketsButton(),
-            pageNavigation.AccountButton(),
+            pageNavigation.SettingsButton(),
           ],
         ),
       ),

@@ -13,13 +13,14 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  
+  final String passwordMessage =
+      'Password must contain at least 1 uppercase letter, at least 7 characters (letters and numbers), and 1 special character.';
   bool isPasswordValid = false;
   bool isEmailValid = true;
   bool isPhoneValid = true;
-  
+
   // snack Bar error message
-   void showErrorSnackbar(String message) {
+  void showErrorSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
@@ -45,7 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
     } else {
       setState(() => isPhoneValid = false);
       showErrorSnackbar('Invalid phone format.');
-      return 'Invalid phone format.';
+      return '';
     }
   }
 
@@ -56,8 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return null;
     } else {
       setState(() => isPasswordValid = false);
-      showErrorSnackbar(
-          'Password must contain at least 1 uppercase letter, at least 7 characters (letters and numbers), and 1 special character.');
+      showErrorSnackbar('Invalid password format.');
       return 'Invalid password format.';
     }
   }
@@ -76,13 +76,14 @@ class _SignUpPageState extends State<SignUpPage> {
       // Proceed with user registration
       await dbHelper.insertUser(username, email, phone, password);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User registered successfully! Please sign in.')),
+        SnackBar(
+            content: Text('User registered successfully! Please sign in.')),
       );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => SignInPage()),
       );
-    } 
+    }
   }
 
   @override
@@ -117,7 +118,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       shadows: [
-                        Shadow(color: Colors.black54, blurRadius: 10, offset: Offset(2, 2)),
+                        Shadow(
+                            color: Colors.black54,
+                            blurRadius: 10,
+                            offset: Offset(2, 2)),
                       ],
                     ),
                   ),
@@ -128,6 +132,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     emailController: _emailController,
                     phoneController: _phoneController,
                     onSignUp: signUp,
+                  ),
+                  // password message fromat
+                  Text(
+                    passwordMessage,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      decoration: TextDecoration.underline
+                    ),
                   ),
                   SizedBox(height: 20),
                   Row(

@@ -2,7 +2,8 @@
 abstract class PageNavigation {
   void HomeButton();
   void TicketsButton();
-  void AccountButton();
+  void SettingsButton();
   void AccountInfo();
   void CustomerService();
+  void SignOut();
 }

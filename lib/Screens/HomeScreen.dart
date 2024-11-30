@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             pageNavigation.HomeButton(),
             pageNavigation.TicketsButton(),
-            pageNavigation.AccountButton(),
+            pageNavigation.SettingsButton(),
           ],
         ),
       ),
