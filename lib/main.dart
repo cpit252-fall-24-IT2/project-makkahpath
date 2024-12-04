@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:makkah_app/Screens/HomeScreen.dart';
 import 'package:makkah_app/Screens/SignInPage.dart';
+import 'package:makkah_app/Screens/QRShow.dart'; // Import QRShow
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:makkah_app/models/TicketCounterProvider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart'; 
@@ -28,7 +30,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Makkah Path',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: SignInPage(), // Your starting screen, SignInPage
+      home: SignInPage(), 
+      routes: {
+        // Define the routes for navigation
+        '/home': (context) => HomePage(),
+      },
     );
   }
 }

@@ -104,8 +104,7 @@ class DatabaseHelper {
     );
   }
 
-    // Load the counter for a specific stop_name and time
-  Future<int> getTicketCounter(String stopName, String time) async {
+     Future<int> getTicketCounter(String stopName, String time) async {
     final db = await database;
     final List<Map<String, dynamic>> result = await db.query(
       'ticket_counters',
@@ -116,16 +115,12 @@ class DatabaseHelper {
     if (result.isNotEmpty) {
       return result.first['counter'];
     }
-
-    // Return 0 if no counter found
     return 0;
   }
 
-   // Insert or update a ticket counter in the database
-  Future<void> insertOrUpdateTicketCounter(String stopName, String time, int counter) async {
+    Future<void> insertOrUpdateTicketCounter(String stopName, String time, int counter) async {
     final db = await database;
 
-    // Check if the ticket counter already exists
     final existingCounter = await db.query(
       'ticket_counters',
       where: 'stop_name = ? AND time = ?',
@@ -133,18 +128,12 @@ class DatabaseHelper {
     );
 
     if (existingCounter.isEmpty) {
-      // Insert new ticket counter if it doesn't exist
       await db.insert(
         'ticket_counters',
-        {
-          'stop_name': stopName,
-          'time': time,
-          'counter': counter,
-        },
+        {'stop_name': stopName, 'time': time, 'counter': counter},
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } else {
-      // Update the counter if it already exists
       await db.update(
         'ticket_counters',
         {'counter': counter},
@@ -154,16 +143,12 @@ class DatabaseHelper {
     }
   }
 
+
  Future<void> insertTicket(String stopName, String time, String destination, String qrCode) async {
     final db = await database;
     await db.insert(
       'tickets',
-      {
-        'stop_name': stopName,
-        'time': time,
-        'destination': destination,
-        'qr_code': qrCode,
-      },
+      {'stop_name': stopName, 'time': time, 'destination': destination, 'qr_code': qrCode},
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -180,13 +165,13 @@ class DatabaseHelper {
 
   // Delete a ticket from the database
  Future<void> deleteTicket(int ticketId) async {
-  final db = await database;
-  await db.delete(
-    'tickets', // Assuming table name is 'tickets'
-    where: 'id = ?',
-    whereArgs: [ticketId],
-  );
-}
+    final db = await database;
+    await db.delete(
+      'tickets',
+      where: 'id = ?',
+      whereArgs: [ticketId],
+    );
+  }
   
   Future<void> closeDatabase() async {
     if (_database != null && isInitialized) {

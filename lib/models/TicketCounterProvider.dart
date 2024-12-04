@@ -37,8 +37,8 @@ class TicketCounterProvider extends ChangeNotifier {
 
     if (currentCounter > 0) {
       currentCounter--;
-      await _dbHelper.insertOrUpdateTicketCounter(stopName, time, currentCounter - 1);
-      ticketCounters[uniqueKey] = currentCounter - 1;
+      await _dbHelper.insertOrUpdateTicketCounter(stopName, time, currentCounter);
+      ticketCounters[uniqueKey] = currentCounter;
       notifyListeners();
     }
   }

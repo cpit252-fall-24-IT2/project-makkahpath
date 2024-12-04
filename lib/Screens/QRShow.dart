@@ -19,19 +19,30 @@ class QRShow extends StatelessWidget {
     final DatabaseHelper dbHelper = DatabaseHelper();
     final ticketCounterProvider = Provider.of<TicketCounterProvider>(context, listen: false);
 
-    // Delete ticket from the database
+    // Delete the ticket from the database
     await dbHelper.deleteTicket(int.parse(ticketId));
 
-    // Decrement the counter
-    await ticketCounterProvider.decrementCounter(destination, time);
+    // Decrement the counter in the database and in the provider state
+    int currentCounter = await dbHelper.getTicketCounter(destination, time);
+    if (currentCounter > 0) {
+      // Decrement the counter
+      currentCounter--;
+      await dbHelper.insertOrUpdateTicketCounter(destination, time, currentCounter);
 
-    // Show confirmation
+      // Update the in-memory state as well
+      ticketCounterProvider.ticketCounters["${destination}_$time"] = currentCounter;
+
+      // Notify listeners to rebuild the UI
+      ticketCounterProvider.notifyListeners();
+    }
+
+    // Show confirmation message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Reservation canceled successfully.')),
     );
 
-    // Navigate back to the TicketsScreen
-    Navigator.of(context).pop();
+    // Navigate back to the HomePage
+    Navigator.pushReplacementNamed(context, '/home'); // Replace with HomePage route name
   }
 
   @override
@@ -52,7 +63,7 @@ class QRShow extends StatelessWidget {
           ElevatedButton(
             onPressed: () => cancelReservation(context),
             child: Text('Cancel Reservation'),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
           ),
         ],
       ),

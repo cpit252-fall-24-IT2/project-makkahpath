@@ -137,12 +137,12 @@ class _HomePageState extends State<HomePage> {
                             String stopName = stop['name'];
                             String destination = stop['destination'];
 
-                            return FutureBuilder<int>(
+                            return FutureBuilder<int>( 
                               future: context
                                   .read<TicketCounterProvider>()
                                   .getCounter(stopName, time),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
+                                if (snapshot.connectionState == 
                                     ConnectionState.waiting) {
                                   return CircularProgressIndicator();
                                 } else if (snapshot.hasError) {
@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             const SizedBox(height: 5),
                                             ElevatedButton(
-                                              onPressed: currentCount <
+                                              onPressed: currentCount < 
                                                       maxReservations
                                                   ? () async {
                                                       await context
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                                                           .incrementCounter(
                                                               stopName,
                                                               time,
-                                                              stop[
+                                                              stop[ 
                                                                   "destination"]);
                                                       Navigator.push(
                                                         context,

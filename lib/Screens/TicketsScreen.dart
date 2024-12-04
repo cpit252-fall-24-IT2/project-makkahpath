@@ -27,22 +27,22 @@ class TicketsScreen extends StatelessWidget {
   }
 
   Widget buildTicketCard(BuildContext context, Map<String, dynamic> ticket) {
-    final uniqueQRData = "${ticket['id']}_${ticket['destination']}_${ticket['time']}";
-    return GestureDetector(
-      onTap: () => navigateToQRShow(context, uniqueQRData),
-      child: Card(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(ticket['destination']),
-              subtitle: Text("Time: ${ticket['time']}"),
-            ),
-            generateQRCode(uniqueQRData),
-          ],
-        ),
+  final uniqueQRData = "${ticket['id']}_${ticket['destination']}_${ticket['time']}";
+  return GestureDetector(
+    onTap: () => navigateToQRShow(context, uniqueQRData),
+    child: Card(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("Stop Name: ${ticket['stop_name']}"),
+            subtitle: Text("Time: ${ticket['time']} | Destination: ${ticket['destination']}"),
+          ),
+          generateQRCode(uniqueQRData),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Future<List<Map<String, dynamic>>> fetchTickets() async {
     return await _dbHelper.getTickets();
