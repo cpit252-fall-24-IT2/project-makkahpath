@@ -1,46 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:makkah_app/models/DB.dart'; 
+import 'package:makkah_app/models/DB.dart';
 
 class TicketCounterProvider extends ChangeNotifier {
-  // Create an instance of DatabaseHelper
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
-  // Map to track counters for each ticket based on unique key (stop_name + time)
   Map<String, int> ticketCounters = {};
 
-  // Method to increment a counter for a specific ticket
-  Future<void> incrementCounter(String stopName, String time) async {
+  Future<void> incrementCounter(String stopName, String time, String destination) async {
     final uniqueKey = "${stopName.replaceAll(' ', '_')}_${time.replaceAll(' ', '_')}";
-    
-    // Get the current counter from the database
     int currentCounter = await _dbHelper.getTicketCounter(stopName, time);
 
-    // Increment the counter if it's less than max
     if (currentCounter <= 30) {
       currentCounter++;
-
-      // Save the updated counter to the database
       await _dbHelper.insertOrUpdateTicketCounter(stopName, time, currentCounter);
-
-      // Update the in-memory map
       ticketCounters[uniqueKey] = currentCounter;
-
-      // Notify listeners about the change
+      String qrCode = "STOP: $stopName | TIME: $time | DEST: $destination";
+      await _dbHelper.insertTicket(stopName, time, destination, qrCode);
       notifyListeners();
     }
   }
 
-  // Method to get the current counter for a specific ticket
   Future<int> getCounter(String stopName, String time) async {
     final uniqueKey = "${stopName.replaceAll(' ', '_')}_${time.replaceAll(' ', '_')}";
-    
     if (ticketCounters.containsKey(uniqueKey)) {
-      return ticketCounters[uniqueKey]!; // Return in-memory counter if available
+      return ticketCounters[uniqueKey]!;
     } else {
-      // Load the counter from the database if it's not in memory
       final counter = await _dbHelper.getTicketCounter(stopName, time);
-      ticketCounters[uniqueKey] = counter; // Save the loaded counter in-memory
+      ticketCounters[uniqueKey] = counter;
       return counter;
+    }
+  }
+
+  Future<void> decrementCounter(String stopName, String time) async {
+    final uniqueKey = "${stopName.replaceAll(' ', '_')}_${time.replaceAll(' ', '_')}";
+    int currentCounter = await _dbHelper.getTicketCounter(stopName, time);
+
+    if (currentCounter > 0) {
+      currentCounter--;
+      await _dbHelper.insertOrUpdateTicketCounter(stopName, time, currentCounter - 1);
+      ticketCounters[uniqueKey] = currentCounter - 1;
+      notifyListeners();
     }
   }
 }

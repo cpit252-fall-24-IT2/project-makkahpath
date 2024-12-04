@@ -55,4 +55,8 @@ Future<void> updateUserProfile({
 
     print('Profile updated successfully!');
   }
+
+  static String? getUsername() {
+    return User.username; 
+  }
 }

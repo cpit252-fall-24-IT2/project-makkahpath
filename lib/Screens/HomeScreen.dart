@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static int currentCount = 0;
   final BottomButton renderer = BasicButtonRenderer();
   final List<Map<String, dynamic>> busStops = [];
   final Set<String> uniqueStopNames = {};
@@ -27,10 +28,10 @@ class _HomePageState extends State<HomePage> {
     loadBusStops();
   }
 
-  // Load bus stops and their ticket counters
   Future<void> loadBusStops() async {
     try {
-      final String jsonString = await rootBundle.loadString('assets/bus_route_data.json');
+      final String jsonString =
+          await rootBundle.loadString('assets/bus_route_data.json');
       final Map<String, dynamic> jsonData = json.decode(jsonString);
 
       List<Map<String, dynamic>> stops = [];
@@ -42,11 +43,13 @@ class _HomePageState extends State<HomePage> {
 
           // Initialize counters for each unique ticket (stop_name + time)
           for (var time in stop['times']) {
-            // Fetch the counter from the database or initialize to 0
-            int counter = await DatabaseHelper().getTicketCounter(stop['stop_name'], time);
+            int counter = await DatabaseHelper()
+                .getTicketCounter(stop['stop_name'], time);
 
             // Store it in the provider's in-memory state
-            context.read<TicketCounterProvider>().ticketCounters["${stop['stop_name']}_$time"] = counter;
+            context
+                .read<TicketCounterProvider>()
+                .ticketCounters["${stop['stop_name']}_$time"] = counter;
           }
 
           stops.add({
@@ -68,11 +71,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final HomePageNavigation pageNavigation = HomePageNavigation(context, renderer);
+    final HomePageNavigation pageNavigation =
+        HomePageNavigation(context, renderer);
 
     List<Map<String, dynamic>> filteredStops = selectedStop.isEmpty
         ? busStops
-        : busStops.where((stop) => stop["name"].toLowerCase().contains(selectedStop.toLowerCase())).toList();
+        : busStops
+            .where((stop) =>
+                stop["name"].toLowerCase().contains(selectedStop.toLowerCase()))
+            .toList();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Home Page')),
@@ -128,62 +135,60 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: stop["time"].map<Widget>((time) {
                             String stopName = stop['name'];
+                            String destination = stop['destination'];
 
                             return FutureBuilder<int>(
-                              // Fetch the current count asynchronously
-                              future: context.read<TicketCounterProvider>().getCounter(stopName, time),
+                              future: context
+                                  .read<TicketCounterProvider>()
+                                  .getCounter(stopName, time),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  // Show a loading indicator while waiting
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return CircularProgressIndicator();
                                 } else if (snapshot.hasError) {
-                                  // Handle error
                                   return Text('Error: ${snapshot.error}');
                                 } else {
-                                  // Successfully got the current count
-                                  int currentCount = snapshot.data ?? 0;
+                                  currentCount = snapshot.data ?? 0;
 
                                   return Card(
-                                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10.0),
                                     child: ListTile(
                                       title: Text(stop["name"]),
-                                      subtitle: Text('Time: $time\nDestination: ${stop["destination"]}'),
+                                      subtitle: Text(
+                                          'Time: $time\nDestination: ${stop["destination"]}'),
                                       trailing: SizedBox(
-                                        width: 100, // Prevent overflow
+                                        width: 100,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
                                           children: [
-                                            // Counter Display
                                             Text(
                                               "$currentCount/$maxReservations",
-                                              style: const TextStyle(fontWeight: FontWeight.bold),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             const SizedBox(height: 5),
-                                            // Reserve Button
                                             ElevatedButton(
-                                              onPressed: currentCount < maxReservations
+                                              onPressed: currentCount <
+                                                      maxReservations
                                                   ? () async {
-                                                      // Increment the counter
-                                                      await context.read<TicketCounterProvider>().incrementCounter(stopName, time);
-
-                                                      // Save the updated counter to the database
-                                                      await DatabaseHelper().insertOrUpdateTicketCounter(stopName, time, currentCount + 1);
-
-                                                      if (currentCount + 1 == maxReservations) {
-                                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                          content: Text("The Bus is full, Find another one!!"),
-                                                          duration: const Duration(seconds: 2),
-                                                        ));
-                                                      } else {
-                                                        // Navigate to TicketsScreen if not full
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) => TicketsScreen(),
-                                                          ),
-                                                        );
-                                                      }
+                                                      await context
+                                                          .read<
+                                                              TicketCounterProvider>()
+                                                          .incrementCounter(
+                                                              stopName,
+                                                              time,
+                                                              stop[
+                                                                  "destination"]);
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                TicketsScreen()),
+                                                      );
                                                     }
                                                   : null,
                                               child: const Text('Reserve'),
