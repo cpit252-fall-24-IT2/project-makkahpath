@@ -10,40 +10,59 @@ class QRShow extends StatelessWidget {
   QRShow({required this.qrData});
 
   Future<void> cancelReservation(BuildContext context) async {
-    // Parse the QR data to extract ticket details
-    final ticketDetails = qrData.split('_'); // Assuming format: id_destination_time
-    final ticketId = ticketDetails[0];
-    final destination = ticketDetails[1];
-    final time = ticketDetails[2];
+    try {
+      final ticketDetails = parseQrData(qrData);
+      final ticketId = int.parse(ticketDetails[0]);
+      final destination = ticketDetails[1];
+      final time = ticketDetails[2];
 
-    final DatabaseHelper dbHelper = DatabaseHelper();
-    final ticketCounterProvider = Provider.of<TicketCounterProvider>(context, listen: false);
+      await deleteTicket(ticketId);
+      await updateTicketCounter(context, destination, time);
 
-    // Delete the ticket from the database
-    await dbHelper.deleteTicket(int.parse(ticketId));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Reservation canceled successfully.')),
+      );
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      handleError(context, e);
+    }
+  }
 
-    // Decrement the counter in the database and in the provider state
+  List<String> parseQrData(String qrData) {
+    return qrData.split('_');
+  }
+
+  Future<void> deleteTicket(int ticketId) async { // Change parameter type to int
+    final dbHelper = DatabaseHelper();
+    await dbHelper.deleteTicket(ticketId); // No parsing needed here
+  }
+
+  Future<void> updateTicketCounter(
+      BuildContext context, String destination, String time) async {
+    final dbHelper = DatabaseHelper();
+    final ticketCounterProvider =
+        Provider.of<TicketCounterProvider>(context, listen: false);
+
     int currentCounter = await dbHelper.getTicketCounter(destination, time);
     if (currentCounter > 0) {
-      // Decrement the counter
       currentCounter--;
-      await dbHelper.insertOrUpdateTicketCounter(destination, time, currentCounter);
+      await dbHelper.insertOrUpdateTicketCounter(
+          destination, time, currentCounter);
 
-      // Update the in-memory state as well
-      ticketCounterProvider.ticketCounters["${destination}_$time"] = currentCounter;
-
-      // Notify listeners to rebuild the UI
+      final uniqueKey = "${destination}_$time";
+      ticketCounterProvider.ticketCounters[uniqueKey] = currentCounter;
       ticketCounterProvider.notifyListeners();
     }
-
-    // Show confirmation message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Reservation canceled successfully.')),
-    );
-
-    // Navigate back to the HomePage
-    Navigator.pushReplacementNamed(context, '/home'); // Replace with HomePage route name
   }
+
+  void handleError(BuildContext context, Object error) {
+    print('Error canceling reservation: $error');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error canceling reservation. Please try again.')),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
